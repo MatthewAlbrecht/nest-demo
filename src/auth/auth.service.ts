@@ -16,7 +16,7 @@ const SALT_ROUNDS = 10;
  * Service handling user operations.
  */
 @Injectable()
-export class UsersService {
+export class AuthService {
   constructor(
     @Inject('DB') private db: PostgresJsDatabase<typeof schema>,
     private dbService: DbService,

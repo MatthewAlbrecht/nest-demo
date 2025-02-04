@@ -28,6 +28,7 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Invalid session');
     }
 
+    console.log('===HERE===', 'auth.guard');
     request.user = { id: userId };
 
     return true;

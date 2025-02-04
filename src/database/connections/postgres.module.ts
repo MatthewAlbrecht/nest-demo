@@ -15,4 +15,4 @@ export const db = drizzle({ client: sql, schema });
   providers: [{ provide: 'DB', useValue: db }],
   exports: ['DB'],
 })
-export class ConnectionModule {}
+export class PostgresModule {}
