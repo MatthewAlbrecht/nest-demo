@@ -1,7 +1,7 @@
 import { Module, Global } from '@nestjs/common';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { neon } from '@neondatabase/serverless';
-import * as schema from './db.schema';
+import * as schema from '../db/db.schema';
 import { config } from 'dotenv';
 
 config({ path: '.env' });
@@ -15,4 +15,4 @@ export const db = drizzle({ client: sql, schema });
   providers: [{ provide: 'DB', useValue: db }],
   exports: ['DB'],
 })
-export class DbModule {}
+export class ConnectionModule {}

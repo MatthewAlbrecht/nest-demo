@@ -4,10 +4,9 @@ import { AppService } from './app.service';
 import { DbService } from './database/db/db.service';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
-import { DbModule } from './database/db/db.module';
-
+import { ConnectionModule } from './database/connection/connection.module';
 @Module({
-  imports: [DbModule],
+  imports: [ConnectionModule],
   controllers: [AppController, UsersController],
   providers: [AppService, DbService, UsersService],
 })

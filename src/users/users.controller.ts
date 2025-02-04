@@ -1,19 +1,8 @@
 import { Controller, Post } from '@nestjs/common';
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { UsersService } from './users.service';
 import { Body } from '@nestjs/common';
-
-/**
- * DTO for creating a new user.
- */
-export class CreateUserDto {
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @MinLength(6)
-  password: string;
-}
+import { SignupUserDto } from './dto/signup-user-dto';
+import { LoginUserDto } from './dto/login-user-dto';
 
 /**
  * Controller for user operations.
@@ -23,7 +12,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('signup')
-  signup(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.signupUser(createUserDto);
+  signup(@Body() signupUserDto: SignupUserDto) {
+    return this.usersService.signupUser(signupUserDto);
+  }
+
+  @Post('login')
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.usersService.loginUser(loginUserDto);
   }
 }
