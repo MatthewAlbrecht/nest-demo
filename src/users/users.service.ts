@@ -7,6 +7,7 @@ import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import * as schema from 'src/database/db/db.schema';
 import { DbService } from 'src/database/db/db.service';
 import { LoginUserDto } from './dto/login-user-dto';
+import { SessionsService } from 'src/sessions/sessions.service';
 
 /** Default salt rounds for password hashing */
 const SALT_ROUNDS = 10;
@@ -19,6 +20,7 @@ export class UsersService {
   constructor(
     @Inject('DB') private db: PostgresJsDatabase<typeof schema>,
     private dbService: DbService,
+    private sessionsService: SessionsService,
   ) {}
 
   /**
@@ -30,15 +32,13 @@ export class UsersService {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     try {
-      const createdUser = await this.db
+      var [createdUser] = await this.db
         .insert(users)
         .values({
           email,
           password: hashedPassword,
         })
         .returning();
-
-      return createdUser;
     } catch (error) {
       this.dbService.handleDbError(error, {
         [DbService.ERROR_CODES.UNIQUE_VIOLATION]: {
@@ -47,6 +47,27 @@ export class UsersService {
         },
       });
     }
+
+    try {
+      var sessionId = await this.sessionsService.createSessionForUser(
+        createdUser.id,
+      );
+    } catch (error) {
+      this.dbService.handleDbError(error, {
+        [DbService.ERROR_CODES.UNIQUE_VIOLATION]: {
+          message: 'Session already exists',
+          status: HttpStatus.CONFLICT,
+        },
+      });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _unused_password, ...userWithoutPassword } = createdUser;
+
+    return {
+      user: userWithoutPassword,
+      sessionId,
+    };
   }
 
   async loginUser({ email, password }: LoginUserDto) {
@@ -65,9 +86,14 @@ export class UsersService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
+    var sessionId = await this.sessionsService.createSessionForUser(user.id);
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _unused_password, ...userWithoutPassword } = user;
 
-    return userWithoutPassword;
+    return {
+      user: userWithoutPassword,
+      sessionId,
+    };
   }
 }

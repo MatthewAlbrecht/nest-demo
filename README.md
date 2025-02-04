@@ -2,9 +2,9 @@
 
 - [x] Hit the hello world enpoint
 - [x] add db service using vercel db & drizzle
-- [ ] host project on vercel?
-- [ ] add users table,
-- [ ] add email pass auth
+- [x] host project on railway?
+- [x] add users table, sessions table
+- [x] add email pass auth
 - [ ] add auth gaurd
 - [ ] add dummy resource guarded by auth gaurd
 
