@@ -1,14 +1,16 @@
 import { Module, Global } from '@nestjs/common';
-import { drizzle } from 'drizzle-orm/neon-http';
-import { neon } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-serverless';
+import { neonConfig, Pool } from '@neondatabase/serverless';
 import * as schema from '../db/db.schema';
 import { config } from 'dotenv';
+import { WebSocket } from 'ws';
 
 config({ path: '.env' });
 
-const sql = neon(process.env.DATABASE_URL!);
+neonConfig.webSocketConstructor = WebSocket;
 
-export const db = drizzle({ client: sql, schema });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
+export const db = drizzle({ client: pool, schema });
 
 @Global()
 @Module({

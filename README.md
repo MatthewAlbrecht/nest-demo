@@ -8,14 +8,9 @@
 - [x] add organization table
 - [x] add basic auth gaurd for organization endpoint
 - [x] add redis for session management
-- [ ] add abac tables
-- [ ] add abac service
-- [ ] add abac guard
-- [ ] add user to organization
-- [ ] add resource to organization
-<!-- - [ ] add role to resource
-- [ ] add role to user
-- [ ] add role to organization -->
+- [x] add abac tables
+- [x] add abac service
+- [x] add abac guard
 
 ## Project setup
 

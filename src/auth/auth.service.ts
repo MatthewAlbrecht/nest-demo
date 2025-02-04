@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
-import { users } from 'src/database/db/db.schema';
+import { userAttributes, users } from 'src/database/db/db.schema';
 import { SignupUserDto } from './dto/signup-user-dto';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import * as schema from 'src/database/db/db.schema';
 import { DbService } from 'src/database/db/db.service';
 import { LoginUserDto } from './dto/login-user-dto';
 import { SessionsService } from 'src/sessions/sessions.service';
+import defaultUserAttributes from './attributes/default-user-attributes';
 
 /** Default salt rounds for password hashing */
 const SALT_ROUNDS = 10;
@@ -32,13 +33,23 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     try {
-      var [createdUser] = await this.db
-        .insert(users)
-        .values({
-          email,
-          password: hashedPassword,
-        })
-        .returning();
+      var createdUser = await this.db.transaction(async (tx) => {
+        var [tempCreatedUser] = await tx
+          .insert(users)
+          .values({
+            email,
+            password: hashedPassword,
+          })
+          .returning();
+        await tx.insert(userAttributes).values(
+          Object.entries(defaultUserAttributes).map(([key, value]) => ({
+            userId: tempCreatedUser.id,
+            attributeKey: key,
+            attributeValue: value,
+          })),
+        );
+        return tempCreatedUser;
+      });
     } catch (error) {
       this.dbService.handleDbError(error, {
         [DbService.ERROR_CODES.UNIQUE_VIOLATION]: {
@@ -101,5 +112,15 @@ export class AuthService {
       user: userWithoutPassword,
       sessionId,
     };
+  }
+
+  addUserAttributes(userId: number, attributes: Record<string, string>) {
+    return this.db.insert(userAttributes).values(
+      Object.entries(attributes).map(([key, value]) => ({
+        userId,
+        attributeKey: key,
+        attributeValue: value,
+      })),
+    );
   }
 }
