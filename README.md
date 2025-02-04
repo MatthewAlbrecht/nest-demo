@@ -1,7 +1,7 @@
 # Notes
 
 - [x] Hit the hello world enpoint
-- [ ] add db service using vercel db & drizzle
+- [x] add db service using vercel db & drizzle
 - [ ] host project on vercel?
 - [ ] add users table,
 - [ ] add email pass auth
