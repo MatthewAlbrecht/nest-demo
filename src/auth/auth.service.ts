@@ -26,7 +26,7 @@ export class UsersService {
   /**
    * Creates a new user with a hashed password.
    * @param param0 - Object with email and password.
-   * @returns The created user.
+   * @returns The created user and session id.
    */
   async signupUser({ email, password }: SignupUserDto) {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -70,6 +70,12 @@ export class UsersService {
     };
   }
 
+  /**
+   * Logs in a user with the provided email and password.
+   * @param email - The user's email.
+   * @param password - The user's password.
+   * @returns The logged in user and session id.
+   */
   async loginUser({ email, password }: LoginUserDto) {
     const [user] = await this.db
       .select()
