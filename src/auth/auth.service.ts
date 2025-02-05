@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { eq, gte, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { userAttributes, users } from 'src/database/db/db.schema';
 import { SignupUserDto } from './dto/signup-user-dto';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
@@ -106,6 +106,10 @@ export class AuthService {
 
     if (!user) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
+    }
+
+    if (!user.isEmailVerified) {
+      throw new HttpException('Email not verified', HttpStatus.UNAUTHORIZED);
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
