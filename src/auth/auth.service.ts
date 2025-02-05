@@ -14,7 +14,7 @@ import * as schema from 'src/database/db/db.schema';
 import { DbService } from 'src/database/db/db.service';
 import { LoginUserDto } from './dto/login-user-dto';
 import { SessionsService } from 'src/sessions/sessions.service';
-import defaultUserAttributes from './attributes/default-user-attributes';
+import defaultSuperAdminAttributes from './attributes/default-superadmin-attributes';
 import * as crypto from 'crypto';
 import { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
@@ -59,7 +59,8 @@ export class AuthService {
           })
           .returning();
         await tx.insert(userAttributes).values(
-          Object.entries(defaultUserAttributes).map(([key, value]) => ({
+          // superadmin only because we are creating the first users and still testing everything
+          Object.entries(defaultSuperAdminAttributes).map(([key, value]) => ({
             userId: tempCreatedUser.id,
             attributeKey: key,
             attributeValue: value,
