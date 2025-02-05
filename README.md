@@ -1,3 +1,7 @@
+### Postman Collection
+
+[Postman Collection](postman-collection.json)
+
 # Notes
 
 - [x] Hit the hello world enpoint
