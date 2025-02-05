@@ -1,6 +1,7 @@
 ### Postman Collection
 
-[Postman Collection](postman-collection.json)
+[Postman Collection](./postman/collection.json)
+[Postman Environment](./postman/environment.json)
 
 # Notes
 

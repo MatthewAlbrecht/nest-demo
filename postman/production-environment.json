@@ -1,0 +1,15 @@
+{
+	"id": "3a75f14a-6e98-48dd-9947-0e9c00829b6c",
+	"name": "Production",
+	"values": [
+		{
+			"key": "url",
+			"value": "https://nest-demo-production-a917.up.railway.app",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-02-05T03:48:22.502Z",
+	"_postman_exported_using": "Postman/11.30.2"
+}
