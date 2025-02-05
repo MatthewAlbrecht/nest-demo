@@ -4,6 +4,7 @@ import {
   timestamp,
   pgTable,
   integer,
+  boolean,
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
@@ -12,6 +13,13 @@ export const users = pgTable('users', {
   password: varchar('password', { length: 255 }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  isEmailVerified: boolean('is_email_verified').default(false),
+  emailVerificationToken: varchar('email_verification_token', {
+    length: 255,
+  }),
+  emailVerificationTokenExpiresAt: timestamp(
+    'email_verification_token_expires_at',
+  ),
 });
 
 export const sessions = pgTable('sessions', {

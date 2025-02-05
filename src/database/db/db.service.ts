@@ -26,7 +26,6 @@ export class DbService {
    * @throws HttpException based on error type or mapping.
    */
   handleDbError(error: unknown, errorMapping: DbErrorMapping): never {
-    console.log(error);
     if (!(error instanceof NeonDbError)) {
       throw new HttpException(
         'Unknown error',

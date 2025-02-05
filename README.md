@@ -11,6 +11,10 @@
 - [x] add abac tables
 - [x] add abac service
 - [x] add abac guard
+- [x] add email verification
+- [ ] add IP rate limiting using upstash
+- [ ] refactor email module to be generic and plug in resend
+- [ ] add tests
 
 ## Project setup
 
