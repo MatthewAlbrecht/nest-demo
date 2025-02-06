@@ -20,7 +20,8 @@ Hosted on Railway + Neon Postgres + Upstash KV
 - [x] add abac tables
 - [x] add abac service
 - [x] add abac guard
-- [x] add email verification
+- [x] add email service
+- [x] add resend email queue/worker
 - [ ] add IP rate limiting
 - [ ] refactor email module to be generic and plug in resend
 - [ ] add tests
