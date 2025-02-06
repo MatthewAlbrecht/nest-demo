@@ -1,9 +1,13 @@
-### Postman Collection
+# NestJS Learning
+
+## Postman Collection
 
 [Postman Collection](./postman/collection.json)
-[Postman Environment](./postman/production-environment.json)
+[Postman Prod Environment](./postman/production-environment.json)
 
-# Notes
+Hosted on Railway + Neon Postgres + Upstash KV
+
+## Notes
 
 - [x] Hit the hello world enpoint
 - [x] add db service using vercel db & drizzle
@@ -17,7 +21,7 @@
 - [x] add abac service
 - [x] add abac guard
 - [x] add email verification
-- [ ] add IP rate limiting using upstash
+- [ ] add IP rate limiting
 - [ ] refactor email module to be generic and plug in resend
 - [ ] add tests
 
